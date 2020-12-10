@@ -17,7 +17,7 @@ class Attendance extends StatefulWidget {
 }
 
 class _AttendanceState extends State<Attendance> {
-  List<String> attendance = ['出席', '遲到', '請假', '缺席'];
+  List<String> attendance = ['present', 'late', 'sick', 'absent'];
   String dropdownValue;
   Stream studentStream;
 
@@ -61,7 +61,7 @@ class _AttendanceState extends State<Attendance> {
                 Padding(
                   padding: const EdgeInsets.only(top: 20.0),
                   child: Text(
-                    '出席率',
+                    'attendance',
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.normal,
@@ -144,7 +144,7 @@ class _AttendanceState extends State<Attendance> {
                       //_AttendanceTileState().add();
                     },
                     child: Text(
-                      '提交',
+                      'submit',
                       style: TextStyle(
                         fontSize: 20,
                         fontFamily: "OpenSans Regular",
@@ -176,7 +176,7 @@ class AttendanceTile extends StatefulWidget {
 String dropdownValue;
 
 class _AttendanceTileState extends State<AttendanceTile> {
-  List<String> attendance = ['出席', '遲到', '請假', '缺席'];
+  List<String> attendance = ['present', 'late', 'sick', 'absent'];
 
   var now = new DateTime.now();
 
@@ -217,7 +217,7 @@ class _AttendanceTileState extends State<AttendanceTile> {
               ),
               DropdownButton(
                 hint: Text(
-                  "選擇",
+                  "select",
                   style: TextStyle(
                     fontFamily: "OpenSans SemiBold",
                   ),
