@@ -46,15 +46,15 @@ class _HomeState extends State<Home> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.date_range),
-            title: new Text('半年'),
+            title: new Text('half year'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.schedule),
-            title: new Text('當天'),
+            title: new Text('day'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
-            title: new Text('設定'),
+            title: new Text('settings'),
           ),
         ],
       ),
