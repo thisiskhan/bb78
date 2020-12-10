@@ -60,7 +60,7 @@ class _UniformState extends State<Uniform> {
                 Padding(
                   padding: const EdgeInsets.only(top: 20.0),
                   child: Text(
-                    '制服',
+                    'uniform',
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.normal,
@@ -122,7 +122,7 @@ class _UniformState extends State<Uniform> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              '制服',
+                              'uniform',
                               style: TextStyle(
                                 fontSize: 25,
                                 fontFamily: "OpenSans SemiBold",
@@ -135,7 +135,7 @@ class _UniformState extends State<Uniform> {
                             Padding(
                               padding: const EdgeInsets.only(right: 8.0),
                               child: Text(
-                                "分數",
+                                "marks",
                                 style: TextStyle(
                                   fontSize: 25,
                                   fontFamily: "OpenSans SemiBold",
@@ -151,14 +151,14 @@ class _UniformState extends State<Uniform> {
                       children: [
                         ListTile(
                           title: Text(
-                            '襯衫',
+                            'shirt',
                             style: TextStyle(
                               fontSize: 20,
                               fontFamily: "OpenSans Regular",
                             ),
                           ),
                           trailing: DropdownButton(
-                            hint: Text("選擇"),
+                            hint: Text("select"),
                             value: shirt,
                             onChanged: (val) {
                               setState(() {
@@ -175,14 +175,14 @@ class _UniformState extends State<Uniform> {
                         ),
                         ListTile(
                           title: Text(
-                            '裙/褲',
+                            'pants',
                             style: TextStyle(
                               fontSize: 20,
                               fontFamily: "OpenSans Regular",
                             ),
                           ),
                           trailing: DropdownButton(
-                            hint: Text("選擇"),
+                            hint: Text("select"),
                             value: pant,
                             onChanged: (val) {
                               setState(() {
@@ -199,14 +199,14 @@ class _UniformState extends State<Uniform> {
                         ),
                         ListTile(
                           title: Text(
-                            '皮帶',
+                            'belt',
                             style: TextStyle(
                               fontSize: 20,
                               fontFamily: "OpenSans Regular",
                             ),
                           ),
                           trailing: DropdownButton(
-                            hint: Text("選擇"),
+                            hint: Text("select"),
                             value: belt,
                             onChanged: (val) {
                               setState(() {
@@ -223,14 +223,14 @@ class _UniformState extends State<Uniform> {
                         ),
                         ListTile(
                           title: Text(
-                            '皮鞋',
+                            'shoe',
                             style: TextStyle(
                               fontSize: 20,
                               fontFamily: "OpenSans Regular",
                             ),
                           ),
                           trailing: DropdownButton(
-                            hint: Text("選擇"),
+                            hint: Text("select"),
                             value: shoe,
                             onChanged: (val) {
                               setState(() {
@@ -247,14 +247,14 @@ class _UniformState extends State<Uniform> {
                         ),
                         ListTile(
                           title: Text(
-                            '其他',
+                            'other',
                             style: TextStyle(
                               fontSize: 20,
                               fontFamily: "OpenSans Regular",
                             ),
                           ),
                           trailing: DropdownButton(
-                            hint: Text("選擇"),
+                            hint: Text("select"),
                             value: other,
                             onChanged: (val) {
                               setState(() {
@@ -301,8 +301,8 @@ class _UniformState extends State<Uniform> {
                         //   "name": widget.name,
                         //   "group": widget.group,
                         // });
-                        if (att.dropdownValue == '請假' ||
-                            att.dropdownValue == '缺席') {
+                        if (att.dropdownValue == 'sick' ||
+                            att.dropdownValue == 'absent') {
                           FirebaseFirestore.instance
                               .collection("CS")
                               .doc(widget.id)
@@ -350,7 +350,7 @@ class _UniformState extends State<Uniform> {
                         }
                       },
                       child: Text(
-                        '提交',
+                        'send',
                         style: TextStyle(fontSize: 20),
                       ),
                     ),
@@ -376,7 +376,7 @@ class _UniformState extends State<Uniform> {
                 Padding(
                   padding: const EdgeInsets.only(top: 20.0),
                   child: Text(
-                    '制服',
+                    'uniform',
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.normal,
@@ -437,7 +437,7 @@ class _UniformState extends State<Uniform> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              '制服',
+                              'uniform',
                               style: TextStyle(
                                 fontSize: 25,
                                 fontFamily: "OpenSans SemiBold",
@@ -450,7 +450,7 @@ class _UniformState extends State<Uniform> {
                             Padding(
                               padding: const EdgeInsets.only(right: 8.0),
                               child: Text(
-                                "分數",
+                                "mark",
                                 style: TextStyle(
                                   fontSize: 25,
                                   fontFamily: "OpenSans SemiBold",
@@ -466,14 +466,14 @@ class _UniformState extends State<Uniform> {
                       children: [
                         ListTile(
                           title: Text(
-                            '襯衫',
+                            'shirt',
                             style: TextStyle(
                               fontSize: 20,
                               fontFamily: "OpenSans Regular",
                             ),
                           ),
                           trailing: DropdownButton(
-                            hint: Text("選擇"),
+                            hint: Text("select"),
                             value: shirt,
                             onChanged: (val) {
                               setState(() {
@@ -490,14 +490,14 @@ class _UniformState extends State<Uniform> {
                         ),
                         ListTile(
                           title: Text(
-                            '裙/褲',
+                            'pant',
                             style: TextStyle(
                               fontSize: 20,
                               fontFamily: "OpenSans Regular",
                             ),
                           ),
                           trailing: DropdownButton(
-                            hint: Text("選擇"),
+                            hint: Text("select"),
                             value: pant,
                             onChanged: (val) {
                               setState(() {
@@ -514,14 +514,14 @@ class _UniformState extends State<Uniform> {
                         ),
                         ListTile(
                           title: Text(
-                            '皮鞋',
+                            'shoe',
                             style: TextStyle(
                               fontSize: 20,
                               fontFamily: "OpenSans Regular",
                             ),
                           ),
                           trailing: DropdownButton(
-                            hint: Text("選擇"),
+                            hint: Text("select"),
                             value: shoe,
                             onChanged: (val) {
                               setState(() {
@@ -538,14 +538,14 @@ class _UniformState extends State<Uniform> {
                         ),
                         ListTile(
                           title: Text(
-                            '其他',
+                            'other',
                             style: TextStyle(
                               fontSize: 20,
                               fontFamily: "OpenSans Regular",
                             ),
                           ),
                           trailing: DropdownButton(
-                            hint: Text("選擇"),
+                            hint: Text("select"),
                             value: other,
                             onChanged: (val) {
                               setState(() {
@@ -591,8 +591,8 @@ class _UniformState extends State<Uniform> {
                         //   "name": widget.name,
                         //   "group": widget.group,
                         // });
-                        if (att.dropdownValue == '請假' ||
-                            att.dropdownValue == '缺席') {
+                        if (att.dropdownValue == 'sick' ||
+                            att.dropdownValue == 'absent') {
                           FirebaseFirestore.instance
                               .collection("JS")
                               .doc(widget.id)
@@ -639,7 +639,7 @@ class _UniformState extends State<Uniform> {
                         }
                       },
                       child: Text(
-                        '提交',
+                        'send',
                         style: TextStyle(fontSize: 20),
                       ),
                     ),
