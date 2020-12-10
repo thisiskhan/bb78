@@ -39,7 +39,7 @@ class _DayState extends State<Day> {
               Padding(
                 padding: const EdgeInsets.only(top: 10.0),
                 child: Text(
-                  '當天',
+                  'day',
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.normal,
@@ -97,7 +97,7 @@ class StatusBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color getColor(attendance) {
-      if (status == "出席" || status == "遲到") {
+      if (status == "present" || status == "late") {
         return Colors.blueGrey[900];
       } else
         return Colors.grey[400];
