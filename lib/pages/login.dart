@@ -61,7 +61,7 @@ class _LoginState extends State<Login> {
                   child: TextFormField(
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: '請輸入電郵地址',
+                      hintText: 'email',
                       hintStyle:
                           TextStyle(fontSize: 16, color: Colors.grey[700]),
                       contentPadding: new EdgeInsets.symmetric(
@@ -71,9 +71,9 @@ class _LoginState extends State<Login> {
                     keyboardType: TextInputType.emailAddress,
                     validator: (value) {
                       if (value.isEmpty) {
-                        return '請輸入電郵地址';
+                        return 'email';
                       } else if (!EmailValidator.validate(value)) {
-                        return '請輸入正確電郵地址';
+                        return 'email';
                       }
                       return null;
                     },
@@ -88,7 +88,7 @@ class _LoginState extends State<Login> {
                   child: TextFormField(
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: '請輸入密碼',
+                      hintText: 'pass',
                       hintStyle:
                           TextStyle(fontSize: 16, color: Colors.grey[700]),
                       contentPadding: new EdgeInsets.symmetric(
@@ -98,7 +98,7 @@ class _LoginState extends State<Login> {
                     obscureText: true,
                     validator: (String value) {
                       if (value.isEmpty) {
-                        return '請輸入密碼';
+                        return 'pass';
                       }
                       return null;
                     },
@@ -109,7 +109,7 @@ class _LoginState extends State<Login> {
                 ),
                 RaisedButton(
                   child: Text(
-                    '登錄',
+                    'login',
                     style: TextStyle(fontSize: 16),
                   ),
                   shape: RoundedRectangleBorder(
