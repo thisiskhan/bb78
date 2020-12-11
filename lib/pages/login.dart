@@ -1,4 +1,9 @@
+import 'package:boysbrigade/components/alertbox.dart';
+import 'package:boysbrigade/components/forgotpassword.dart';
+import 'package:boysbrigade/components/loader.dart';
 import 'package:boysbrigade/pages/home.dart';
+import 'package:boysbrigade/pages/register.dart';
+//import 'package:boysbrigade/authService/auth_prodiver.dart';
 import 'package:boysbrigade/provider/auth_prodiver.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +20,8 @@ class _LoginState extends State<Login> {
   final _loginFormKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-
+  final GlobalKey<State> _keyLoader = new GlobalKey<State>();
+  AuthService authService = new AuthService();
   @override
   void dispose() {
     _emailController.dispose();
@@ -25,20 +31,6 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    // String userId;
-    // getCurrentUser() async {
-    //   _firestore
-    //       .collection('js')
-    //       .where("userId", isEqualTo: "js@bb78.com")
-    //       .snapshots();
-
-    //   User user = await FirebaseAuth.instance.currentUser;
-    //   setState(() {
-    //     userId = user.uid;
-    //   });
-    //   print("js handled");
-    // }
-
     return Scaffold(
       backgroundColor: Colors.blueGrey[50],
       body: Center(
@@ -120,20 +112,62 @@ class _LoginState extends State<Login> {
                   padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20.0),
                   onPressed: () async {
                     if (_loginFormKey.currentState.validate()) {
-                      try {
-                        AuthProvider()
-                            .login(
-                                _emailController.text, _passwordController.text)
-                            .then((_) {
-                          Navigator.pushReplacement(context,
-                              MaterialPageRoute(builder: (context) => Home()));
-                        });
-                      } catch (e) {
-                        print('Error Happened!!!: $e');
+                      Loader.showLoadingScreen(context, _keyLoader);
+
+                      await authService.signIn(
+                          _emailController.text, _passwordController.text);
+
+                      Navigator.of(_keyLoader.currentContext,
+                              rootNavigator: true)
+                          .pop();
+
+                      int statusCode = authService.statusCode;
+                      print(statusCode);
+                      if (statusCode == 200) {
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (context) => Home()));
+                      }
+                      if (statusCode != null && statusCode != 200) {
+                        print(statusCode);
+
+                        print(authService.msg);
+
+                        AlertBox alertBox = AlertBox(authService.msg);
+                        return showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return alertBox.build(context);
+                            });
                       }
                     }
                     //getCurrentUser();
                   },
+                ),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(18.0),
+                      child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Register()));
+                          },
+                          child: Text("Register")),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(18.0),
+                      child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Forgotpassword()));
+                          },
+                          child: Text("Forgot password")),
+                    )
+                  ],
                 )
               ],
             ),

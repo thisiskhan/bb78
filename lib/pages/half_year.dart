@@ -16,16 +16,18 @@ class HalfYear extends StatefulWidget {
 class _HalfYearState extends State<HalfYear> {
   @override
   void initState() {
+    print("Me Group value");
+    print(groupvalue);
     super.initState();
     if (groupvalue == 'CS') {
       newStream = FirebaseFirestore.instance
-          .collection('day')
-          .orderBy('group')
+          .collection('users')
+          .where('group', isEqualTo: "CS")
           .snapshots();
-    } else if (groupvalue == 'JS') {
+    } else {
       newStream = FirebaseFirestore.instance
-          .collection('dayjs')
-          .orderBy('group')
+          .collection('users')
+          .where('group', isEqualTo: "JS")
           .snapshots();
     }
   }
@@ -53,13 +55,13 @@ class _HalfYearState extends State<HalfYear> {
                     if (groupvalue == 'CS') {
                       print('CS');
                       newStream = FirebaseFirestore.instance
-                          .collection('day')
-                          .orderBy('group')
+                          .collection('users')
+                          .where('group', isEqualTo: "CS")
                           .snapshots();
                     } else if (groupvalue == 'JS') {
                       newStream = FirebaseFirestore.instance
-                          .collection('dayjs')
-                          .orderBy('group')
+                          .collection('users')
+                          .where('group', isEqualTo: "JS")
                           .snapshots();
                     }
                   });
@@ -166,7 +168,6 @@ class _HalfYearState extends State<HalfYear> {
                           builder: (context) => Group(
                                 group: groupUsers[index].data()['group'],
                                 name: groupUsers[index].data()['name'],
-                                date: groupUsers[index].data()['date'],
                                 status: groupUsers[index].data()['status'],
                                 total: groupUsers[index].data()['totalMark'],
                                 id: widget.id,

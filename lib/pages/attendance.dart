@@ -30,16 +30,17 @@ class _AttendanceState extends State<Attendance> {
 
   @override
   void initState() {
+    print("i m half  year value ${halfyear.groupvalue}");
     super.initState();
     if (halfyear.groupvalue == 'CS') {
       halfyear.newStream = FirebaseFirestore.instance
-          .collection('day')
-          .orderBy('group')
+          .collection('users')
+          .where('group', isEqualTo: "CS")
           .snapshots();
     } else if (halfyear.groupvalue == 'JS') {
       halfyear.newStream = FirebaseFirestore.instance
-          .collection('dayjs')
-          .orderBy('group')
+          .collection('users')
+          .where('group', isEqualTo: "JS")
           .snapshots();
     }
   }
@@ -115,7 +116,7 @@ class _AttendanceState extends State<Attendance> {
                             return AttendanceTile(
                               name: document.data()['name'],
                               group: document.data()['group'],
-                              id: document.data()['id'],
+                              id: document.data()['StudentId'],
                             );
                           }).toList(),
                         );
@@ -123,37 +124,37 @@ class _AttendanceState extends State<Attendance> {
                 ],
               ),
             ),
-            Container(
-              color: Colors.white,
-              child: Align(
-                alignment: FractionalOffset.bottomCenter,
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    color: Colors.blueGrey[900],
-                    textColor: Colors.white,
-                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 120),
-                    onPressed: () {
-                      Navigator.pop(
-                        context,
-                        MaterialPageRoute(builder: (context) => Day()),
-                      );
-                      //_AttendanceTileState().add();
-                    },
-                    child: Text(
-                      'submit',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontFamily: "OpenSans Regular",
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            // Container(
+            //   color: Colors.white,
+            //   child: Align(
+            //     alignment: FractionalOffset.bottomCenter,
+            //     child: Padding(
+            //       padding: const EdgeInsets.all(10.0),
+            //       child: RaisedButton(
+            //         shape: RoundedRectangleBorder(
+            //           borderRadius: BorderRadius.circular(30),
+            //         ),
+            //         color: Colors.blueGrey[900],
+            //         textColor: Colors.white,
+            //         padding: EdgeInsets.symmetric(vertical: 8, horizontal: 120),
+            //         onPressed: () {
+            //           Navigator.pop(
+            //             context,
+            //             MaterialPageRoute(builder: (context) => Day()),
+            //           );
+            //           //_AttendanceTileState().add();
+            //         },
+            //         child: Text(
+            //           'submit',
+            //           style: TextStyle(
+            //             fontSize: 20,
+            //             fontFamily: "OpenSans Regular",
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),
@@ -163,11 +164,8 @@ class _AttendanceState extends State<Attendance> {
 
 class AttendanceTile extends StatefulWidget {
   final String name, group, id;
-  final model.Attendance newVal;
 
-  AttendanceTile(
-      {Key key, this.name, this.group, this.id, @required this.newVal})
-      : super(key: key);
+  AttendanceTile({Key key, this.name, this.group, this.id}) : super(key: key);
 
   @override
   _AttendanceTileState createState() => _AttendanceTileState();
@@ -178,7 +176,14 @@ String dropdownValue;
 class _AttendanceTileState extends State<AttendanceTile> {
   List<String> attendance = ['present', 'late', 'sick', 'absent'];
 
-  var now = new DateTime.now();
+  var currentDate = DateTime.now();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print(widget.id);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -228,155 +233,48 @@ class _AttendanceTileState extends State<AttendanceTile> {
                     dropdownValue = val;
                   });
 
-                  // FirebaseFirestore.instance
-                  //     .collection("student")
-                  //     .doc(widget.id)
-                  //     .collection("attendance")
-                  //     .add({
-                  //   'date': "${now.day}/${now.month}/${now.year}",
-                  //   'studentAttendance': dropdownValue,
-                  // });
                   if (halfyear.groupvalue == 'CS') {
-                    // FirebaseFirestore.instance
-                    //     .collection("student")
-                    //     .doc(widget.id)
-                    //     .collection("attendance")
-                    //     .add({
-                    //   'date': "${now.day}/${now.month}/${now.year}",
-                    //   'studentAttendance': dropdownValue,
-                    // });
-                    // //  for day
-                    // FirebaseFirestore.instance
-                    //     .collection("day")
-                    //     .doc(widget.id)
-                    //     .set({
-                    //   'name': widget.name,
-                    //   'group': widget.group,
-                    //   "status": dropdownValue,
-                    //   "totalMark": "0",
-                    //   "date": "${now.day}/${now.month}/${now.year}",
-                    // });
-
                     final DocumentReference documentReference =
-                        FirebaseFirestore.instance.doc("data/${widget.id}");
+                        FirebaseFirestore.instance
+                            .doc("csattendance/${widget.id}");
                     subscription =
                         documentReference.snapshots().listen((datasnapshot) {
                       print(documentReference);
-                      if (datasnapshot.data()['date'] !=
-                          "${now.day}/${now.month}/${now.year}") {
-                        print("need to add");
-                        FirebaseFirestore.instance
-                            .collection("CS")
-                            .doc(widget.id)
-                            .collection("attendance")
-                            .add({
-                          'date': "${now.day}/${now.month}/${now.year}",
-                          'id': widget.id,
-                          'studentAttendance': dropdownValue,
-                        });
-                        //  for day
-                        FirebaseFirestore.instance
-                            .collection("day")
-                            .doc(widget.id)
-                            .set({
-                          'name': widget.name,
-                          'group': widget.group,
-                          "status": dropdownValue,
-                          "totalMark": "0",
-                          "id": widget.id,
-                          "date": "${now.day}/${now.month}/${now.year}",
-                        });
-                        //check DB
-                        FirebaseFirestore.instance
-                            .collection("data")
-                            .doc(widget.id)
-                            .set({
-                          'name': widget.name,
-                          'group': widget.group,
-                          'id': widget.id,
-                          "status": dropdownValue,
-                          "date": "${now.day}/${now.month}/${now.year}",
-                        });
-                      } else if (datasnapshot.data()['date'] ==
-                          "${now.day}/${now.month}/${now.year}") {
-                        FirebaseFirestore.instance
-                            .collection("CS")
-                            .doc(widget.id)
-                            .collection("attendance")
-                            .doc(widget.newVal.studentID)
-                            .update({
-                          'date': "${now.day}/${now.month}/${now.year}",
-                          'id': widget.id,
-                          'studentAttendance': dropdownValue,
-                        });
-                        print("error");
-                      }
-                    });
-                  } else if (halfyear.groupvalue == 'JS') {
-                    // FirebaseFirestore.instance
-                    //     .collection("attendancejs")
-                    //     .doc(widget.id)
-                    //     .collection("attendance")
-                    //     .add({
-                    //   'date': "${now.day}/${now.month}/${now.year}",
-                    //   'studentAttendance': dropdownValue,
-                    // });
-                    // //  for day
-                    // FirebaseFirestore.instance
-                    //     .collection("dayjs")
-                    //     .doc(widget.id)
-                    //     .set({
-                    //   'name': widget.name,
-                    //   'group': widget.group,
-                    //   "status": dropdownValue,
-                    //   "totalMark": "0",
-                    //   "date": "${now.day}/${now.month}/${now.year}",
-                    // });
 
+                      FirebaseFirestore.instance
+                          .collection('CSattendance')
+                          .doc(
+                              "${currentDate.day}${currentDate.month}${currentDate.year}")
+                          .collection(widget.name)
+                          .doc(widget.id)
+                          .set({
+                        "StudentId": widget.id,
+                        "name": widget.name,
+                        "group": widget.group,
+                        "Status": dropdownValue
+                      });
+                    });
+                  }
+                  if (halfyear.groupvalue == 'JS') {
                     final DocumentReference documentReference =
-                        FirebaseFirestore.instance.doc("datajs/${widget.id}");
+                        FirebaseFirestore.instance
+                            .doc("jsattendance/${widget.id}");
                     subscription =
                         documentReference.snapshots().listen((datasnapshot) {
-                      print(datasnapshot.data()['date']);
-                      if (datasnapshot.data()['date'] !=
-                          "${now.day}/${now.month}/${now.year}") {
-                        print("need to add");
-                        FirebaseFirestore.instance
-                            .collection("JS")
-                            .doc(widget.id)
-                            .collection("attendance")
-                            .add({
-                          'date': "${now.day}/${now.month}/${now.year}",
-                          'id': widget.id,
-                          'studentAttendance': dropdownValue,
-                        });
-                        //  for day
-                        FirebaseFirestore.instance
-                            .collection("dayjs")
-                            .doc(widget.id)
-                            .set({
-                          'name': widget.name,
-                          'group': widget.group,
-                          "status": dropdownValue,
-                          "id": widget.id,
-                          "totalMark": "0",
-                          "date": "${now.day}/${now.month}/${now.year}",
-                        });
-                        //check DB
-                        FirebaseFirestore.instance
-                            .collection("datajs")
-                            .doc(widget.id)
-                            .set({
-                          'name': widget.name,
-                          'group': widget.group,
-                          'id': widget.id,
-                          "status": dropdownValue,
-                          "date": "${now.day}/${now.month}/${now.year}",
-                        });
-                      } else if (datasnapshot.data()['date'] ==
-                          "${now.day}/${now.month}/${now.year}") {
-                        print("error");
-                      }
+                      print(documentReference);
+
+                      FirebaseFirestore.instance
+                          .collection('JSattendance')
+                          .doc(
+                              "${currentDate.day}${currentDate.month}${currentDate.year}")
+                          .collection(widget.name)
+                          .doc(widget.id)
+                          .set({
+                        "StudentId": widget.id,
+                        "name": widget.name,
+                        "group": widget.group,
+                        "Status": dropdownValue
+                      });
                     });
                   }
                 },
