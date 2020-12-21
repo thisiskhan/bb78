@@ -145,7 +145,7 @@ class _AttendanceState extends State<Attendance> {
                       //_AttendanceTileState().add();
                     },
                     child: Text(
-                      'submit',
+                      'Submit',
                       style: TextStyle(
                         fontSize: 20,
                         fontFamily: "OpenSans Regular",
