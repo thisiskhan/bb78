@@ -16,17 +16,15 @@ class HalfYear extends StatefulWidget {
 class _HalfYearState extends State<HalfYear> {
   @override
   void initState() {
-    print("Me Group value");
-    print(groupvalue);
     super.initState();
     if (groupvalue == 'CS') {
       newStream = FirebaseFirestore.instance
-          .collection('users')
+          .collection('students')
           .where('group', isEqualTo: "CS")
           .snapshots();
     } else {
       newStream = FirebaseFirestore.instance
-          .collection('users')
+          .collection('students')
           .where('group', isEqualTo: "JS")
           .snapshots();
     }
@@ -55,12 +53,12 @@ class _HalfYearState extends State<HalfYear> {
                     if (groupvalue == 'CS') {
                       print('CS');
                       newStream = FirebaseFirestore.instance
-                          .collection('users')
+                          .collection('students')
                           .where('group', isEqualTo: "CS")
                           .snapshots();
                     } else if (groupvalue == 'JS') {
                       newStream = FirebaseFirestore.instance
-                          .collection('users')
+                          .collection('students')
                           .where('group', isEqualTo: "JS")
                           .snapshots();
                     }

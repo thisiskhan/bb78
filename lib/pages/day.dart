@@ -13,12 +13,12 @@ class _DayState extends State<Day> {
     super.initState();
     if (halfyear.groupvalue == 'CS') {
       halfyear.newStream = FirebaseFirestore.instance
-          .collection('day')
+          .collection('CSAttendance')
           .orderBy('group')
           .snapshots();
     } else if (halfyear.groupvalue == 'JS') {
       halfyear.newStream = FirebaseFirestore.instance
-          .collection('dayjs')
+          .collection('JSAttendance')
           .orderBy('group')
           .snapshots();
     }
@@ -39,7 +39,7 @@ class _DayState extends State<Day> {
               Padding(
                 padding: const EdgeInsets.only(top: 10.0),
                 child: Text(
-                  'day',
+                  'Day',
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.normal,
@@ -73,9 +73,9 @@ class _DayState extends State<Day> {
                       return StatusBar(
                         name: doc.data()['name'],
                         group: doc.data()['group'],
-                        status: doc.data()['status'],
-                        totalMark: doc.data()['totalMark'],
-                        date: doc.data()['date'],
+                        status: doc.data()['Status'],
+                        // totalMark: doc.data()['totalMark'],
+                        // date: doc.data()['date'],
                       );
                     }).toList(),
                   );

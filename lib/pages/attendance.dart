@@ -30,16 +30,16 @@ class _AttendanceState extends State<Attendance> {
 
   @override
   void initState() {
-    print("i m half  year value ${halfyear.groupvalue}");
+    print("${halfyear.groupvalue}");
     super.initState();
     if (halfyear.groupvalue == 'CS') {
       halfyear.newStream = FirebaseFirestore.instance
-          .collection('users')
+          .collection('students')
           .where('group', isEqualTo: "CS")
           .snapshots();
     } else if (halfyear.groupvalue == 'JS') {
       halfyear.newStream = FirebaseFirestore.instance
-          .collection('users')
+          .collection('students')
           .where('group', isEqualTo: "JS")
           .snapshots();
     }
@@ -236,7 +236,7 @@ class _AttendanceTileState extends State<AttendanceTile> {
                   if (halfyear.groupvalue == 'CS') {
                     final DocumentReference documentReference =
                         FirebaseFirestore.instance
-                            .doc("csattendance/${widget.id}");
+                            .doc("CSattendance/${widget.id}");
                     subscription =
                         documentReference.snapshots().listen((datasnapshot) {
                       print(documentReference);
@@ -258,7 +258,7 @@ class _AttendanceTileState extends State<AttendanceTile> {
                   if (halfyear.groupvalue == 'JS') {
                     final DocumentReference documentReference =
                         FirebaseFirestore.instance
-                            .doc("jsattendance/${widget.id}");
+                            .doc("JSattendance/${widget.id}");
                     subscription =
                         documentReference.snapshots().listen((datasnapshot) {
                       print(documentReference);
