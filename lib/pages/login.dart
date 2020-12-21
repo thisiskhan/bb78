@@ -1,9 +1,6 @@
 import 'package:boysbrigade/components/alertbox.dart';
-import 'package:boysbrigade/components/forgotpassword.dart';
 import 'package:boysbrigade/components/loader.dart';
 import 'package:boysbrigade/pages/home.dart';
-import 'package:boysbrigade/pages/register.dart';
-//import 'package:boysbrigade/authService/auth_prodiver.dart';
 import 'package:boysbrigade/provider/auth_prodiver.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -143,32 +140,6 @@ class _LoginState extends State<Login> {
                     //getCurrentUser();
                   },
                 ),
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(18.0),
-                      child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Register()));
-                          },
-                          child: Text("Register")),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(18.0),
-                      child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Forgotpassword()));
-                          },
-                          child: Text("Forgot password")),
-                    )
-                  ],
-                )
               ],
             ),
           ),
