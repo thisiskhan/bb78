@@ -81,7 +81,7 @@ class _AttendanceState extends State<Attendance> {
                           fontFamily: 'OpenSans SemiBold'),
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -124,37 +124,37 @@ class _AttendanceState extends State<Attendance> {
                 ],
               ),
             ),
-            // Container(
-            //   color: Colors.white,
-            //   child: Align(
-            //     alignment: FractionalOffset.bottomCenter,
-            //     child: Padding(
-            //       padding: const EdgeInsets.all(10.0),
-            //       child: RaisedButton(
-            //         shape: RoundedRectangleBorder(
-            //           borderRadius: BorderRadius.circular(30),
-            //         ),
-            //         color: Colors.blueGrey[900],
-            //         textColor: Colors.white,
-            //         padding: EdgeInsets.symmetric(vertical: 8, horizontal: 120),
-            //         onPressed: () {
-            //           Navigator.pop(
-            //             context,
-            //             MaterialPageRoute(builder: (context) => Day()),
-            //           );
-            //           //_AttendanceTileState().add();
-            //         },
-            //         child: Text(
-            //           'submit',
-            //           style: TextStyle(
-            //             fontSize: 20,
-            //             fontFamily: "OpenSans Regular",
-            //           ),
-            //         ),
-            //       ),
-            //     ),
-            //   ),
-            // ),
+            Container(
+              color: Colors.white,
+              child: Align(
+                alignment: FractionalOffset.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    color: Colors.blueGrey[900],
+                    textColor: Colors.white,
+                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 120),
+                    onPressed: () {
+                      Navigator.pop(
+                        context,
+                        MaterialPageRoute(builder: (context) => Day()),
+                      );
+                      //_AttendanceTileState().add();
+                    },
+                    child: Text(
+                      'submit',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontFamily: "OpenSans Regular",
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
