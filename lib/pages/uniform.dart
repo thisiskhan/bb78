@@ -304,10 +304,12 @@ class _UniformState extends State<Uniform> {
                         if (att.dropdownValue == 'sick' ||
                             att.dropdownValue == 'absent') {
                           FirebaseFirestore.instance
-                              .collection("CS")
+                              .collection("CSMarks")
+                              .doc(
+                                  "${currentDate.day}${currentDate.month}${currentDate.year}")
+                              .collection(widget.name)
                               .doc(widget.id)
-                              .collection("marks")
-                              .add({
+                              .set({
                             'Date': "${now.day}/${now.month}/${now.year}",
                             'Shirt': "0",
                             'Pant': "0",
@@ -316,19 +318,21 @@ class _UniformState extends State<Uniform> {
                             'Other': "0",
                           });
 
-                          FirebaseFirestore.instance
-                              .collection("day")
-                              .doc(widget.id)
-                              .update({
-                            'totalMark': "0",
-                          });
+                          // FirebaseFirestore.instance
+                          //     .collection("day")
+                          //     .doc(widget.id)
+                          //     .update({
+                          //   'totalMark': "0",
+                          // });
                           Navigator.pop(context);
                         } else {
                           FirebaseFirestore.instance
-                              .collection("CS")
+                              .collection("CSMarks")
+                              .doc(
+                                  "${currentDate.day}${currentDate.month}${currentDate.year}")
+                              .collection(widget.name)
                               .doc(widget.id)
-                              .collection("marks")
-                              .add({
+                              .set({
                             'Date': "${now.day}/${now.month}/${now.year}",
                             'Shirt': shirt,
                             'Pant': pant,
@@ -339,18 +343,18 @@ class _UniformState extends State<Uniform> {
 
                           calcCS();
 
-                          FirebaseFirestore.instance
-                              .collection("day")
-                              .doc(widget.id)
-                              .update({
-                            'totalMark': finalMarks,
-                          });
+                          // FirebaseFirestore.instance
+                          //     .collection("day")
+                          //     .doc(widget.id)
+                          //     .update({
+                          //   'totalMark': finalMarks,
+                          // });
 
                           Navigator.pop(context);
                         }
                       },
                       child: Text(
-                        'send',
+                        'Done',
                         style: TextStyle(fontSize: 20),
                       ),
                     ),
@@ -594,10 +598,12 @@ class _UniformState extends State<Uniform> {
                         if (att.dropdownValue == 'sick' ||
                             att.dropdownValue == 'absent') {
                           FirebaseFirestore.instance
-                              .collection("JS")
+                              .collection("JSMarks")
+                              .doc(
+                                  "${currentDate.day}${currentDate.month}${currentDate.year}")
+                              .collection(widget.name)
                               .doc(widget.id)
-                              .collection("marks")
-                              .add({
+                              .set({
                             'Date': "${now.day}/${now.month}/${now.year}",
                             'Shirt': '0',
                             'Pant': '0',
@@ -606,19 +612,21 @@ class _UniformState extends State<Uniform> {
                             'Other': '0',
                           });
 
-                          FirebaseFirestore.instance
-                              .collection("dayjs")
-                              .doc(widget.id)
-                              .update({
-                            'totalMark': '0',
-                          });
+                          // FirebaseFirestore.instance
+                          //     .collection("dayjs")
+                          //     .doc(widget.id)
+                          //     .update({
+                          //   'totalMark': '0',
+                          // });
                           Navigator.pop(context);
                         } else {
                           FirebaseFirestore.instance
-                              .collection("JS")
+                              .collection("JSMarks")
+                              .doc(
+                                  "${currentDate.day}${currentDate.month}${currentDate.year}")
+                              .collection(widget.name)
                               .doc(widget.id)
-                              .collection("marks")
-                              .add({
+                              .set({
                             'Date': "${now.day}/${now.month}/${now.year}",
                             'Shirt': shirt,
                             'Pant': pant,
@@ -628,18 +636,18 @@ class _UniformState extends State<Uniform> {
 
                           calcJS();
 
-                          FirebaseFirestore.instance
-                              .collection("dayjs")
-                              .doc(widget.id)
-                              .update({
-                            'totalMark': finalMarks,
-                          });
+                          // FirebaseFirestore.instance
+                          //     .collection("dayjs")
+                          //     .doc(widget.id)
+                          //     .update({
+                          //   'totalMark': finalMarks,
+                          // });
 
                           Navigator.pop(context);
                         }
                       },
                       child: Text(
-                        'send',
+                        'Done',
                         style: TextStyle(fontSize: 20),
                       ),
                     ),
