@@ -67,8 +67,10 @@ class _HomeState extends State<Home> {
               width: 75.0,
               child: FloatingActionButton(
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => AttendanceTest()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AttendanceTest()));
                 },
                 child: Icon(
                   Icons.add,

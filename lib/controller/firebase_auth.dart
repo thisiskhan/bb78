@@ -1,3 +1,4 @@
+import 'package:boysbrigade/pages/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +20,6 @@ class Authentication<T> extends BaseConfig<T> {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   FirebaseAuth auth = FirebaseAuth.instance;
 
-
   @override
   Future<String> checkCurrentUser() async {
     return auth.currentUser != null ? auth.currentUser.uid : null;
@@ -34,17 +34,25 @@ class Authentication<T> extends BaseConfig<T> {
   Future<String> signInUser(
       {String email,
       String password,
+      context,
       GlobalKey<ScaffoldState> scaffoldKey}) async {
     //  This is where all the magic for sign in with password happens
     try {
       UserCredential userCredential = await _firebaseAuth
           .signInWithEmailAndPassword(email: email, password: password);
+      scaffoldKey.currentState.showSnackBar(new SnackBar(
+        content: new Text("signIn sucessful $email."),
+      ));
+      Future.delayed(
+          Duration(seconds: 2),
+          () => Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (_) => Home())));
       return userCredential.user.uid;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         // Assign the error to a variable
         scaffoldKey.currentState.showSnackBar(new SnackBar(
-          content: new Text("The account already exists for $email."),
+          content: new Text("No account exists for $email."),
         ));
       } else if (e.code == 'wrong-password') {
         // Assign the error to a snackBar
@@ -58,7 +66,8 @@ class Authentication<T> extends BaseConfig<T> {
       ));
     }
   }
-/// Sign Up You can register the user using this method
+
+  /// Sign Up You can register the user using this method
   @override
   Future<String> signUpUser(
       {email,

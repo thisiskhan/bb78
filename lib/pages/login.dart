@@ -1,11 +1,14 @@
 import 'package:boysbrigade/components/alertbox.dart';
 import 'package:boysbrigade/components/loader.dart';
+import 'package:boysbrigade/controller/firebase_auth.dart';
 import 'package:boysbrigade/controller/logger_controller.dart';
 import 'package:boysbrigade/pages/home.dart';
+import 'package:boysbrigade/pages/settings.dart';
 import 'package:boysbrigade/provider/auth_prodiver.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 final _firestore = FirebaseFirestore.instance;
 
@@ -19,7 +22,11 @@ class _LoginState extends State<Login> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final GlobalKey<State> _keyLoader = new GlobalKey<State>();
-  AuthService authService = new AuthService();
+  final GlobalKey<ScaffoldState> _scaffoldFormKey =
+      new GlobalKey<ScaffoldState>();
+  ProgressDialog pr;
+  Authentication auth = Authentication();
+  AuthService authService = AuthService();
   @override
   void dispose() {
     _emailController.dispose();
@@ -30,8 +37,11 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     logger.i('Login Initialize');
+    pr = ProgressDialog(context, showLogs: true);
+    pr.style(message: 'Please wait...');
     return Scaffold(
       backgroundColor: Colors.blueGrey[50],
+      key: _scaffoldFormKey,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(40.0, 50, 40, 0),
@@ -110,33 +120,45 @@ class _LoginState extends State<Login> {
                   padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20.0),
                   onPressed: () async {
                     if (_loginFormKey.currentState.validate()) {
-                      Loader.showLoadingScreen(context, _keyLoader);
+                      ///[newcode] below is the updated version for firebase auth
+                      pr.show();
+                      auth
+                          .signInUser(
+                              scaffoldKey: _scaffoldFormKey,
+                              context: context,
+                              email: _emailController.text,
+                              password: _passwordController.text)
+                          .whenComplete(() {
+                        pr.hide();
+                      });
+                      ///[oldcode] below is the old auth firebase code
+                      //   Loader.showLoadingScreen(context, _keyLoader);
 
-                      await authService.signIn(
-                          _emailController.text, _passwordController.text);
+                      //   await authService.signIn(
+                      //       _emailController.text, _passwordController.text);
 
-                      Navigator.of(_keyLoader.currentContext,
-                              rootNavigator: true)
-                          .pop();
+                      //   Navigator.of(_keyLoader.currentContext,
+                      //           rootNavigator: true)
+                      //       .pop();
 
-                      int statusCode = authService.statusCode;
-                      print(statusCode);
-                      if (statusCode == 200) {
-                        Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (context) => Home()));
-                      }
-                      if (statusCode != null && statusCode != 200) {
-                        print(statusCode);
+                      //   int statusCode = authService.statusCode;
+                      //   print(statusCode);
+                      //   if (statusCode == 200) {
+                      //     Navigator.pushReplacement(context,
+                      //         MaterialPageRoute(builder: (context) => Home()));
+                      //   }
+                      //   if (statusCode != null && statusCode != 200) {
+                      //     print(statusCode);
 
-                        print(authService.msg);
+                      //     print(authService.msg);
 
-                        AlertBox alertBox = AlertBox(authService.msg);
-                        return showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return alertBox.build(context);
-                            });
-                      }
+                      //     AlertBox alertBox = AlertBox(authService.msg);
+                      //     return showDialog(
+                      //         context: context,
+                      //         builder: (BuildContext context) {
+                      //           return alertBox.build(context);
+                      //         });
+                      //   }
                     }
                     //getCurrentUser();
                   },
