@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'package:boysbrigade/controller/logger_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'attendance_test.dart';
 import 'uniform.dart';
 import 'day.dart';
 import 'half_year.dart' as halfyear;
@@ -30,6 +32,7 @@ class _AttendanceState extends State<Attendance> {
 
   @override
   void initState() {
+    print("${halfyear.data}");
     print("${halfyear.groupvalue}");
     super.initState();
     if (halfyear.groupvalue == 'CS') {
@@ -43,6 +46,8 @@ class _AttendanceState extends State<Attendance> {
           .where('group', isEqualTo: "JS")
           .snapshots();
     }
+
+    logger.i('Attendance Initialize');
   }
 
   @override
@@ -113,6 +118,8 @@ class _AttendanceState extends State<Attendance> {
                           shrinkWrap: true,
                           children: snapshot.data.docs
                               .map((DocumentSnapshot document) {
+                            snapshot.data.docs
+                                .map((e) => print(e.data()['name']));
                             return AttendanceTile(
                               name: document.data()['name'],
                               group: document.data()['group'],
@@ -138,11 +145,11 @@ class _AttendanceState extends State<Attendance> {
                     textColor: Colors.white,
                     padding: EdgeInsets.symmetric(vertical: 8, horizontal: 120),
                     onPressed: () {
-                      Navigator.pop(
+                      Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => Day()),
+                        MaterialPageRoute(
+                            builder: (context) => AttendanceTest()),
                       );
-                      //_AttendanceTileState().add();
                     },
                     child: Text(
                       'Submit',
@@ -231,6 +238,7 @@ class _AttendanceTileState extends State<AttendanceTile> {
                 onChanged: (val) {
                   setState(() {
                     dropdownValue = val;
+                    print(dropdownValue);
                   });
 
                   if (halfyear.groupvalue == 'CS') {
@@ -245,14 +253,14 @@ class _AttendanceTileState extends State<AttendanceTile> {
                           .collection('CSattendance')
                           .doc(
                               "${currentDate.day}${currentDate.month}${currentDate.year}")
-                          .collection(widget.name)
-                          .doc(widget.id)
-                          .set({
-                        "StudentId": widget.id,
-                        "name": widget.name,
-                        "group": widget.group,
-                        "Status": dropdownValue
-                      });
+                          .set(
+                        {
+                          "StudentId": widget.id,
+                          "name": widget.name,
+                          "group": widget.group,
+                          "Status": dropdownValue
+                        },
+                      );
                     });
                   }
                   if (halfyear.groupvalue == 'JS') {

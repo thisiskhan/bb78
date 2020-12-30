@@ -1,11 +1,9 @@
 import "package:flutter/material.dart";
 
 class AlertBox extends StatelessWidget {
-  String message;
+  final String message;
 
-  AlertBox(String message) {
-    this.message = message;
-  }
+  AlertBox(this.message);
 
   @override
   Widget build(BuildContext context) {

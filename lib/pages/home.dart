@@ -1,4 +1,6 @@
+import 'package:boysbrigade/controller/logger_controller.dart';
 import 'package:boysbrigade/pages/attendance.dart';
+import 'package:boysbrigade/pages/attendance_test.dart';
 import 'package:boysbrigade/pages/settings.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +25,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    logger.i('Home Initialize');
     final user = Provider.of<User>(context);
     final bool isAuthenticated = user != null;
 
@@ -46,15 +49,15 @@ class _HomeState extends State<Home> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.date_range),
-            title: new Text('half year'),
+            label: 'half year',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.schedule),
-            title: new Text('day'),
+            label: 'day',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
-            title: new Text('settings'),
+            label: 'settings',
           ),
         ],
       ),
@@ -65,7 +68,7 @@ class _HomeState extends State<Home> {
               child: FloatingActionButton(
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Attendance()));
+                      MaterialPageRoute(builder: (context) => AttendanceTest()));
                 },
                 child: Icon(
                   Icons.add,

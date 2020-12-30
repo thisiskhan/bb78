@@ -1,5 +1,6 @@
 import 'package:boysbrigade/components/alertbox.dart';
 import 'package:boysbrigade/components/loader.dart';
+import 'package:boysbrigade/controller/logger_controller.dart';
 import 'package:boysbrigade/pages/home.dart';
 import 'package:boysbrigade/provider/auth_prodiver.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -28,6 +29,7 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    logger.i('Login Initialize');
     return Scaffold(
       backgroundColor: Colors.blueGrey[50],
       body: Center(
@@ -44,54 +46,53 @@ class _LoginState extends State<Login> {
                 SizedBox(
                   height: 30,
                 ),
-                Material(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(30),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'email',
-                      hintStyle:
-                          TextStyle(fontSize: 16, color: Colors.grey[700]),
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 20.0),
+                TextFormField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(30),
                     ),
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'email';
-                      } else if (!EmailValidator.validate(value)) {
-                        return 'email';
-                      }
-                      return null;
-                    },
+                    fillColor: Colors.white,
+                    hintText: 'email',
+                    filled: true,
+                    hintStyle: TextStyle(fontSize: 16, color: Colors.grey[700]),
+                    contentPadding: new EdgeInsets.symmetric(
+                        vertical: 15.0, horizontal: 20.0),
                   ),
+                  controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'email';
+                    } else if (!EmailValidator.validate(value)) {
+                      return 'email';
+                    }
+                    return null;
+                  },
                 ),
                 SizedBox(
                   height: 15,
                 ),
-                Material(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(30),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'pass',
-                      hintStyle:
-                          TextStyle(fontSize: 16, color: Colors.grey[700]),
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 20.0),
-                    ),
-                    controller: _passwordController,
-                    obscureText: true,
-                    validator: (String value) {
-                      if (value.isEmpty) {
-                        return 'pass';
-                      }
-                      return null;
-                    },
+                TextFormField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide.none),
+                    fillColor: Colors.white,
+                    filled: true,
+                    hintText: 'pass',
+                    hintStyle: TextStyle(fontSize: 16, color: Colors.grey[700]),
+                    contentPadding: new EdgeInsets.symmetric(
+                        vertical: 15.0, horizontal: 20.0),
                   ),
+                  controller: _passwordController,
+                  obscureText: true,
+                  validator: (String value) {
+                    if (value.isEmpty) {
+                      return 'pass';
+                    }
+                    return null;
+                  },
                 ),
                 SizedBox(
                   height: 30,

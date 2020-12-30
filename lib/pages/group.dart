@@ -26,7 +26,7 @@ class _GroupState extends State<Group> {
         centerTitle: true,
         automaticallyImplyLeading: false,
         title: Text(
-          widget.group,
+          widget.group ?? '',
           style:
               TextStyle(fontFamily: 'OpenSans SemiBold', color: Colors.black),
         ),
@@ -65,7 +65,7 @@ class _GroupState extends State<Group> {
                                       Padding(
                                         padding: const EdgeInsets.all(10.0),
                                         child: Text(
-                                          widget.name,
+                                          widget.name ?? '',
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 30),
@@ -128,19 +128,19 @@ class _GroupState extends State<Group> {
                                     child: Column(
                                       children: [
                                         Text(
-                                          widget.date,
+                                          widget.date ?? '',
                                           style: TextStyle(
                                             fontFamily: 'OpenSans SemiBold',
                                           ),
                                         ),
                                         Text(
-                                          widget.status,
+                                          widget.status ?? '',
                                           style: TextStyle(
                                               fontFamily: 'OpenSans SemiBold',
                                               fontSize: 20),
                                         ),
                                         Text(
-                                          widget.total,
+                                          widget.total ?? '',
                                           style: TextStyle(
                                               fontFamily: 'OpenSans SemiBold',
                                               fontSize: 25),
@@ -155,19 +155,19 @@ class _GroupState extends State<Group> {
                                     child: Column(
                                       children: [
                                         Text(
-                                          widget.date,
+                                          widget.date ?? '',
                                           style: TextStyle(
                                             fontFamily: 'OpenSans SemiBold',
                                           ),
                                         ),
                                         Text(
-                                          widget.status,
+                                          widget.status ?? '',
                                           style: TextStyle(
                                               fontFamily: 'OpenSans SemiBold',
                                               fontSize: 20),
                                         ),
                                         Text(
-                                          widget.total,
+                                          widget.total ?? '',
                                           style: TextStyle(
                                               fontFamily: 'OpenSans SemiBold',
                                               fontSize: 25),
@@ -182,19 +182,19 @@ class _GroupState extends State<Group> {
                                     child: Column(
                                       children: [
                                         Text(
-                                          widget.date,
+                                          widget.date ?? '',
                                           style: TextStyle(
                                             fontFamily: 'OpenSans SemiBold',
                                           ),
                                         ),
                                         Text(
-                                          widget.status,
+                                          widget.status ?? '',
                                           style: TextStyle(
                                               fontFamily: 'OpenSans SemiBold',
                                               fontSize: 20),
                                         ),
                                         Text(
-                                          widget.total,
+                                          widget.total ?? '',
                                           style: TextStyle(
                                               fontFamily: 'OpenSans SemiBold',
                                               fontSize: 25),

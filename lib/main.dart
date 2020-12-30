@@ -7,6 +7,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:boysbrigade/pages/error.dart';
 import 'package:boysbrigade/pages/login.dart';
 
+import 'pages/home.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MainApp());
@@ -15,6 +17,7 @@ void main() async {
 class MainApp extends StatelessWidget {
   String testProviderText = "Hello provider";
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -27,6 +30,7 @@ class MainApp extends StatelessWidget {
           );
         }
         if (snapshot.connectionState == ConnectionState.done) {
+            FirebaseAuth auth = FirebaseAuth.instance;
           return MaterialApp(
               debugShowCheckedModeBanner: false,
               home: MultiProvider(
@@ -38,7 +42,7 @@ class MainApp extends StatelessWidget {
                 ],
                 child: MaterialApp(
                   debugShowCheckedModeBanner: false,
-                  home: Login(),
+                  home:auth.currentUser != null? Home() : Login(),
                 ),
               ));
         }
