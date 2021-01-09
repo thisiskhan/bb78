@@ -6,6 +6,7 @@ import 'package:boysbrigade/pages/uniform.dart';
 import 'package:boysbrigade/pages/uniform_new.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'half_year.dart' as halfyear;
 
 var date = new DateTime.now();
@@ -26,6 +27,7 @@ class AttendanceTest extends StatefulWidget {
 }
 
 class _AttendanceTestState extends State<AttendanceTest> {
+  ProgressDialog pr;
   //  This test contains all the data we will pass to firebase database
   List test = [];
 
@@ -80,6 +82,8 @@ class _AttendanceTestState extends State<AttendanceTest> {
 
   @override
   Widget build(BuildContext context) {
+    pr = ProgressDialog(context, showLogs: true);
+    pr.style(message: 'Please wait...');
     return Scaffold(
       backgroundColor: Colors.blueGrey[50],
       key: scaffoldKey,
@@ -159,6 +163,7 @@ class _AttendanceTestState extends State<AttendanceTest> {
                     textColor: Colors.white,
                     padding: EdgeInsets.symmetric(vertical: 8, horizontal: 120),
                     onPressed: () async {
+                      pr.show();
                       // We append all the data we need to send to firebase here
                       for (int i = 0; i < selectedItemValue.length; i++)
                         test.add({
@@ -172,7 +177,7 @@ class _AttendanceTestState extends State<AttendanceTest> {
                           context: context,
                           course: widget.collectionType,
                           data: {'data': FieldValue.arrayUnion(test)},
-                          scaffoldKey: scaffoldKey);
+                          scaffoldKey: scaffoldKey).whenComplete(() => pr.hide());
                     },
                     child: Text(
                       // ignore: null_aware_in_condition

@@ -1,7 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:boysbrigade/controller/update_collection_controller.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 var currentDate = new DateTime.now();
 
+///[UniformNew] this class is a new class for [uniform] screen.
+///
+///it is under review before it will be converted to uniform screen
 class UniformNew extends StatefulWidget {
   final String name, group, id;
 
@@ -11,10 +17,23 @@ class UniformNew extends StatefulWidget {
 }
 
 class _UniformNewState extends State<UniformNew> {
+  ProgressDialog pr;
+  //Emapty list to hold all our Firebase data
+  List test = [];
   // This contains all the selected values for the current list builder
   List<String> selectedItemValue = List<String>();
 
+  // Asign all the need content to a varriable [itemName]
   List<String> itemName = ['shirt', 'pant', 'shoe', 'other'];
+
+  // This class contains all the code for firebase related
+  AddToDatabase addToDatabase = AddToDatabase();
+
+  // Defining the collection we want firebase to create for us
+  CollectionReference attendance;
+
+  // Global Key for our scaffold widget
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -24,11 +43,20 @@ class _UniformNewState extends State<UniformNew> {
     for (int i = 0; i < itemName.length; i++) {
       selectedItemValue.add('1');
     }
+    //initializing Attendance
+    attendance = FirebaseFirestore.instance
+        .collection(widget.group == 'CS' ? 'CsMarks' : 'JsMarks');
+
+    // Clear everything in the test List
+    test.clear();
   }
 
   @override
   Widget build(BuildContext context) {
+    pr = ProgressDialog(context, showLogs: true);
+    pr.style(message: 'Please wait...');
     return Scaffold(
+      key: scaffoldKey,
       backgroundColor: Colors.blueGrey[50],
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(70.0),
@@ -124,15 +152,16 @@ class _UniformNewState extends State<UniformNew> {
                   child: ListTile(
                       leading: Text(
                         '${itemName[index]}',
-                         style: TextStyle(
-                    fontSize: 20,
-                    fontFamily: "OpenSans SemiBold",
-                    fontWeight: FontWeight.bold,
-                  ),
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontFamily: "OpenSans SemiBold",
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       trailing: DropdownButtonHideUnderline(
                         child: DropdownButton(
                           onChanged: (value) {
+                            test.clear();
                             selectedItemValue[index] = value;
                             setState(() {});
                           },
@@ -157,7 +186,27 @@ class _UniformNewState extends State<UniformNew> {
                   color: Colors.blueGrey[900],
                   textColor: Colors.white,
                   padding: EdgeInsets.symmetric(vertical: 8, horizontal: 120),
-                  onPressed: () {},
+                  onPressed: () async {
+                    pr.show();
+                    // We append all the data we need to send to firebase here
+                    for (int i = 0; i < selectedItemValue.length; i++)
+                      test.add({
+                        "name": itemName[i],
+                        "mark": selectedItemValue[i],
+                      });
+
+                    // Adding data to Firebase
+                    await addToDatabase
+                        .addUser(
+                            refrenceType: attendance,
+                            context: context,
+                            course: widget.name,
+                            data: {'data': FieldValue.arrayUnion(test)},
+                            scaffoldKey: scaffoldKey)
+                        .whenComplete(() {
+                      pr.hide();
+                    });
+                  },
                   child: Text(
                     'Done',
                     style: TextStyle(fontSize: 20),
@@ -180,11 +229,11 @@ List<DropdownMenuItem<String>> _markValue() {
             value: value,
             child: Text(
               value,
-               style: TextStyle(
-                    fontSize: 20,
-                    fontFamily: "OpenSans SemiBold",
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: TextStyle(
+                fontSize: 20,
+                fontFamily: "OpenSans SemiBold",
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ))
       .toList();
