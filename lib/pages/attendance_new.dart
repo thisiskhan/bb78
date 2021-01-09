@@ -1,19 +1,26 @@
 import 'package:boysbrigade/components/global/date_time.dart';
 import 'package:boysbrigade/controller/logger_controller.dart';
 import 'package:boysbrigade/controller/update_collection_controller.dart';
+import 'package:boysbrigade/pages/home.dart';
+import 'package:boysbrigade/pages/uniform.dart';
+import 'package:boysbrigade/pages/uniform_new.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'half_year.dart' as halfyear;
 
+var date = new DateTime.now();
+
 // Our current data is assign to this variable
-String currentDate = '${DateFormate.dateTime.day}' +
-    '${DateFormate.dateTime.month}' +
-    '${DateFormate.dateTime.year}';
+String currentDate =
+    '${DateFormate.dateTime.day}/${DateFormate.dateTime.month}/${DateFormate.dateTime.year}';
 
 ///[AttendanceTest] is the updated version for [Attendance] class.
 ///
 ///Currently under review before it can be accepted as the main class for Attendance
 class AttendanceTest extends StatefulWidget {
+  final String collectionType;
+
+  const AttendanceTest({Key key, this.collectionType}) : super(key: key);
   @override
   _AttendanceTestState createState() => _AttendanceTestState();
 }
@@ -23,8 +30,20 @@ class _AttendanceTestState extends State<AttendanceTest> {
   List test = [];
 
   // Defining the collection we want firebase to create for us
-  CollectionReference attendance =
-      FirebaseFirestore.instance.collection('CsAttendance');
+  CollectionReference attendance;
+
+//Data to check for snapshot
+  bool data = false;
+  Future checkForData() {
+    // Use to check if a collection has a data
+    final checkForCollection = FirebaseFirestore.instance
+        .collection(
+            widget.collectionType == 'CS' ? 'CsAttendance' : 'JsAttendance')
+        .doc("${date.day}${date.month}${date.year}${widget.collectionType}")
+        .get();
+
+    return checkForCollection;
+  }
 
   // This class contains all the code for firebase related
   AddToDatabase addToDatabase = AddToDatabase();
@@ -37,6 +56,16 @@ class _AttendanceTestState extends State<AttendanceTest> {
 
   @override
   void initState() {
+    checkForData().then((value) {
+      if (value.exists) {
+        setState(() {
+          data = true;
+        });
+      }
+    });
+    //initializing Attendance
+    attendance = FirebaseFirestore.instance.collection(
+        widget.collectionType == 'CS' ? 'CsAttendance' : 'JsAttendance');
     // Helps in caching the data for firebase
     FirebaseFirestore.instance.settings = Settings(persistenceEnabled: true);
     // This when we tells the [selectedItemValue] how much item it should build
@@ -62,9 +91,14 @@ class _AttendanceTestState extends State<AttendanceTest> {
           "Attendance $currentDate",
           style: TextStyle(color: Colors.black),
         ),
-        leading: Icon(
-          Icons.arrow_back,
-          color: Colors.black,
+        leading: InkWell(
+          onTap: () {
+            Navigator.pop(context, MaterialPageRoute(builder: (_) => Home()));
+          },
+          child: Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+          ),
         ),
         automaticallyImplyLeading: true,
       ),
@@ -77,23 +111,38 @@ class _AttendanceTestState extends State<AttendanceTest> {
                   itemCount: halfyear.data.length,
                   itemBuilder: (context, index) {
                     print(test);
-                    return Card(
-                      child: ListTile(
-                          leading:
-                              Text("${halfyear.data[index].data()['group']}"),
-                          title: Text('${halfyear.data[index].data()['name']}'),
-                          trailing: DropdownButtonHideUnderline(
-                            child: DropdownButton(
-                              onChanged: (value) {
-                                test.clear();
-                                selectedItemValue[index] = value;
-                                setState(() {});
-                              },
-                              hint: Text('Select'),
-                              value: selectedItemValue[index].toString(),
-                              items: _items(),
-                            ),
-                          )),
+                    return InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => UniformNew(
+                                      name: halfyear.data[index].data()['name'],
+                                      group:
+                                          halfyear.data[index].data()['group'],
+                                      id: halfyear.data[index]
+                                          .data()['StudentId'],
+                                    )));
+                      },
+                      child: Card(
+                        child: ListTile(
+                            leading:
+                                Text("${halfyear.data[index].data()['group']}"),
+                            title:
+                                Text('${halfyear.data[index].data()['name']}'),
+                            trailing: DropdownButtonHideUnderline(
+                              child: DropdownButton(
+                                onChanged: (value) {
+                                  test.clear();
+                                  selectedItemValue[index] = value;
+                                  setState(() {});
+                                },
+                                hint: Text('Select'),
+                                value: selectedItemValue[index].toString(),
+                                items: _items(),
+                              ),
+                            )),
+                      ),
                     );
                   }),
             ),
@@ -121,12 +170,13 @@ class _AttendanceTestState extends State<AttendanceTest> {
                       await addToDatabase.addUser(
                           refrenceType: attendance,
                           context: context,
-                          course: 'CS',
+                          course: widget.collectionType,
                           data: {'data': FieldValue.arrayUnion(test)},
                           scaffoldKey: scaffoldKey);
                     },
                     child: Text(
-                      'Submit',
+                      // ignore: null_aware_in_condition
+                      data ? 'Update' : 'Submit',
                       style: TextStyle(
                         fontSize: 20,
                         fontFamily: "OpenSans Regular",

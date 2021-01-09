@@ -1,12 +1,12 @@
 import 'package:boysbrigade/controller/logger_controller.dart';
 import 'package:boysbrigade/pages/attendance.dart';
-import 'package:boysbrigade/pages/attendance_test.dart';
+import 'package:boysbrigade/pages/attendance_new.dart';
 import 'package:boysbrigade/pages/settings.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import './half_year.dart';
+import './half_year.dart' as half;
 import './day.dart';
 
 class Home extends StatefulWidget {
@@ -18,7 +18,7 @@ class _HomeState extends State<Home> {
   int _selectedTab = 0;
 
   final List<Widget> _tabs = [
-    HalfYear(),
+    half.HalfYear(),
     Day(),
     Settings(),
   ];
@@ -38,6 +38,7 @@ class _HomeState extends State<Home> {
         onTap: (index) {
           setState(() {
             _selectedTab = index;
+            print(_selectedTab);
           });
         },
         backgroundColor: Colors.white,
@@ -70,7 +71,9 @@ class _HomeState extends State<Home> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => AttendanceTest()));
+                          builder: (context) => AttendanceTest(
+                         collectionType:  half.groupvalue == 'CS' ? 'CS' : 'JS',
+                          )));
                 },
                 child: Icon(
                   Icons.add,

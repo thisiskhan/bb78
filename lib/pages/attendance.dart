@@ -3,7 +3,7 @@ import 'package:boysbrigade/controller/logger_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'attendance_test.dart';
+import 'attendance_new.dart';
 import 'uniform.dart';
 import 'day.dart';
 import 'half_year.dart' as halfyear;
