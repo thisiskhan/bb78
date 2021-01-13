@@ -172,12 +172,14 @@ class _AttendanceTestState extends State<AttendanceTest> {
                         });
 
                       // Adding data to Firebase
-                      await addToDatabase.addUser(
-                          refrenceType: attendance,
-                          context: context,
-                          course: widget.collectionType,
-                          data: {'data': FieldValue.arrayUnion(test)},
-                          scaffoldKey: scaffoldKey).whenComplete(() => pr.hide());
+                      await addToDatabase
+                          .addUser(
+                              refrenceType: attendance,
+                              context: context,
+                              course: widget.collectionType,
+                              data: {'data': FieldValue.arrayUnion(test)},
+                              scaffoldKey: scaffoldKey)
+                          .whenComplete(() => pr.hide());
                     },
                     child: Text(
                       // ignore: null_aware_in_condition

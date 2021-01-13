@@ -12,15 +12,11 @@ class _DayState extends State<Day> {
   void initState() {
     super.initState();
     if (halfyear.groupvalue == 'CS') {
-      halfyear.newStream = FirebaseFirestore.instance
-          .collection('CSAttendance')
-          .orderBy('group')
-          .snapshots();
+      halfyear.newStream =
+          FirebaseFirestore.instance.collection('CSAttendance').snapshots();
     } else if (halfyear.groupvalue == 'JS') {
-      halfyear.newStream = FirebaseFirestore.instance
-          .collection('JSAttendance')
-          .orderBy('group')
-          .snapshots();
+      halfyear.newStream =
+          FirebaseFirestore.instance.collection('JSAttendance').snapshots();
     }
   }
 
