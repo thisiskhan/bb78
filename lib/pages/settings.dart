@@ -2,16 +2,27 @@ import 'package:boysbrigade/pages/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-User user = FirebaseAuth.instance.currentUser;
-String userId = user.uid;
-final String email = user.email.toString();
-
 class Settings extends StatefulWidget {
   @override
   _SettingsState createState() => _SettingsState();
 }
 
 class _SettingsState extends State<Settings> {
+
+  User user = FirebaseAuth.instance.currentUser;
+  String userId;
+  String email;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    userId = user.uid;
+    email = user.email.toString();
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,7 +115,8 @@ class _SettingsState extends State<Settings> {
   }
 }
 
-void signOut() async {
+Future<void> signOut() async {
+  //log("signing out $email");
   await FirebaseAuth.instance.signOut();
 }
 
@@ -114,6 +126,18 @@ class Account extends StatefulWidget {
 }
 
 class _AccountState extends State<Account> {
+
+  User user = FirebaseAuth.instance.currentUser;
+  String userId;
+  String email;
+
+  @override
+  void initState() {
+    userId = user.uid;
+    email = user.email.toString();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -160,7 +184,7 @@ class _AccountState extends State<Account> {
                         children: [
                           Padding(
                             padding:
-                                const EdgeInsets.fromLTRB(20.0, 10, 10, 10),
+                            const EdgeInsets.fromLTRB(20.0, 10, 10, 10),
                             child: Text(
                               email,
                               style: TextStyle(
@@ -188,10 +212,11 @@ class _AccountState extends State<Account> {
                   textColor: Colors.white,
                   padding: EdgeInsets.symmetric(vertical: 8, horizontal: 120),
                   onPressed: () {
-                    signOut();
-                    Navigator.pop(context);
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => Login()));
+                    signOut().then((value){
+                      Navigator.pop(context);
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => Login()));
+                    });
                   },
                   child: Text(
                     '登出',
@@ -242,13 +267,13 @@ class _AboutState extends State<About> {
                   Text(
                     "身為一位中級組隊員，我希望集隊後可以愉快地打籃球，不用統計人數或者收通告。為 BB78 創造一個更美好的下午，而且為每個 BB78 導師提供優質自動化服務。",
                     style:
-                        TextStyle(fontFamily: 'OpenSans Regular', fontSize: 20),
+                    TextStyle(fontFamily: 'OpenSans Regular', fontSize: 20),
                   ),
                   SizedBox(height: 60.0),
                   Text(
                     "隆重介紹：",
                     style:
-                        TextStyle(fontFamily: 'OpenSans Regular', fontSize: 20),
+                    TextStyle(fontFamily: 'OpenSans Regular', fontSize: 20),
                   ),
                   SizedBox(height: 10.0),
                   Text(
