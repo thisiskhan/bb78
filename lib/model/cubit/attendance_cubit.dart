@@ -5,7 +5,5 @@ class AttendanceCubit extends Cubit<String> {
   AttendanceCubit() : super('JS');
 
 // Chnaging our class base on the current state
-  void onChanged(value) {
-    emit(value);
-  }
+  void onChanged(value) => emit(value);
 }

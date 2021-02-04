@@ -177,7 +177,11 @@ class _AttendanceTestState extends State<AttendanceTest> {
                               refrenceType: attendance,
                               context: context,
                               course: widget.collectionType,
-                              data: {'data': FieldValue.arrayUnion(test)},
+                              data: {
+                                'data': FieldValue.arrayUnion(test),
+                                'date':
+                                    "${date.day}${date.month}${date.year}${widget.collectionType}"
+                              },
                               scaffoldKey: scaffoldKey)
                           .whenComplete(() => pr.hide());
                     },

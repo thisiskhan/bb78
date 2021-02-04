@@ -2,21 +2,32 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'half_year.dart' as halfyear;
 
+var date = new DateTime.now();
+
 class Day extends StatefulWidget {
   @override
   _DayState createState() => _DayState();
 }
 
 class _DayState extends State<Day> {
+  // Attendance to read all firbase collection data
+  var attendance;
+  // Getting the currentDate of the current user session
+  var currentDate =
+      "${date.day}${date.month}${date.year}${halfyear.groupvalue}";
   @override
   void initState() {
     super.initState();
     if (halfyear.groupvalue == 'CS') {
-      halfyear.newStream =
-          FirebaseFirestore.instance.collection('CSAttendance').snapshots();
+      halfyear.newStream = FirebaseFirestore.instance
+          .collection('CsAttendance')
+          .where('date', isEqualTo: currentDate)
+          .snapshots();
     } else if (halfyear.groupvalue == 'JS') {
-      halfyear.newStream =
-          FirebaseFirestore.instance.collection('JSAttendance').snapshots();
+      halfyear.newStream = FirebaseFirestore.instance
+          .collection('JsAttendance')
+          .where('date', isEqualTo: currentDate)
+          .snapshots();
     }
   }
 
@@ -52,6 +63,7 @@ class _DayState extends State<Day> {
           padding: const EdgeInsets.all(10.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Padding(
                 padding: const EdgeInsets.all(10.0),
@@ -60,32 +72,54 @@ class _DayState extends State<Day> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Text(
-                      "Tom",
-                      style: TextStyle(fontSize: 25),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Text(
-                      "Present",
-                      style: TextStyle(fontSize: 25),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Text(
-                      "5",
-                      style: TextStyle(fontSize: 25),
-                    ),
-                  ),
-                ],
-              ),
+              StreamBuilder(
+                  stream: halfyear.newStream,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      //Reading our collection data
+                      attendance = snapshot.data.documents[0].data()['data'];
+                      return Expanded(
+                        child: ListView.builder(
+                          itemCount: attendance.length,
+                          itemBuilder: (context, index) => Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Text(
+                                      attendance[index]['name'],
+                                      style: TextStyle(fontSize: 25),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Text(
+                                      attendance[index]['status'],
+                                      style: TextStyle(fontSize: 25),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Text(
+                                      "5",
+                                      style: TextStyle(fontSize: 25),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    } else {
+                      return CircularProgressIndicator();
+                    }
+                  }),
             ],
           ),
         ),
@@ -93,6 +127,7 @@ class _DayState extends State<Day> {
     );
   }
 }
+
 // import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:flutter/material.dart';
 // import 'half_year.dart' as halfyear;

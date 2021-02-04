@@ -23,6 +23,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  build_runner: ^1.11.1
   cloud_firestore: ^0.14.0+2
   cupertino_icons: ^0.1.3
   email_validator: ^1.0.5
@@ -32,6 +33,8 @@ dependencies:
   flutter_bloc: ^6.1.1
   flutter_spinkit: null
   get: ^3.22.2
+  get_it: ^5.0.6
+  json_serializable: ^3.5.1
   logger: ^0.9.4
   progress_dialog: ^1.2.4
   provider: ^4.0.1
