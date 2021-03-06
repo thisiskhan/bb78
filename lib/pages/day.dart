@@ -58,69 +58,71 @@ class _DayState extends State<Day> {
           elevation: 0,
         ),
       ),
-      body: Container(
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Text(
-                  "CS 14",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      body: SingleChildScrollView(
+        child: Container(
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(
+                    "CS 14",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
-              StreamBuilder(
-                  stream: halfyear.newStream,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      //Reading our collection data
-                      attendance = snapshot.data.documents[0].data()['data'];
-                      return Expanded(
-                        child: ListView.builder(
-                          itemCount: attendance.length,
-                          itemBuilder: (context, index) => Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Text(
-                                      attendance[index]['name'],
-                                      style: TextStyle(fontSize: 25),
+                StreamBuilder(
+                    stream: halfyear.newStream,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        //Reading our collection data
+                        attendance = snapshot.data.documents[0].data()['data'];
+                        return Expanded(
+                          child: ListView.builder(
+                            itemCount: attendance.length,
+                            itemBuilder: (context, index) => Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Text(
+                                        attendance[index]['name'],
+                                        style: TextStyle(fontSize: 25),
+                                      ),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Text(
-                                      attendance[index]['status'],
-                                      style: TextStyle(fontSize: 25),
+                                    Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Text(
+                                        attendance[index]['status'],
+                                        style: TextStyle(fontSize: 25),
+                                      ),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Text(
-                                      "5",
-                                      style: TextStyle(fontSize: 25),
+                                    Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Text(
+                                        "5",
+                                        style: TextStyle(fontSize: 25),
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    } else {
-                      return CircularProgressIndicator();
-                    }
-                  }),
-            ],
+                        );
+                      } else {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                    }),
+              ],
+            ),
           ),
         ),
       ),
